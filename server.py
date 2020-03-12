@@ -45,36 +45,37 @@ def nodetext(node):
 
 
 def listener(messages):
-    result = run_api(nodes_query)
-    nodes = result['data']['nodes']['edges']
+    if messages:
+        result = run_api(nodes_query)
+        nodes = result['data']['nodes']['edges']
 
-    for m in messages:
-        chatid = m.chat.id
-        if m.content_type == 'text':
-            text = m.text
-            text = text.lower()
+        for m in messages:
+            chatid = m.chat.id
+            if m.content_type == 'text':
+                text = m.text
+                text = text.lower()
 
-            try:
-                if text == "u":
-                    data = [obj for obj in nodes if(obj['node']['online'])]
-                    for node in data:
-                        tb.send_message(chatid, text=nodetext(node=node))
-                    if not data:
-                        tb.send_message(chatid, text=EMPTY_TEXT)
+                try:
+                    if text == "u":
+                        data = [obj for obj in nodes if(obj['node']['online'])]
+                        for node in data:
+                            tb.send_message(chatid, text=nodetext(node=node))
+                        if not data:
+                            tb.send_message(chatid, text=EMPTY_TEXT)
 
-                elif text == "d":
-                    data = [obj for obj in nodes if (not obj['node']['online'])]
-                    for node in data:
-                        tb.send_message(chatid, text=nodetext(node=node))
-                    if not data:
-                        tb.send_message(chatid, text=EMPTY_TEXT)
+                    elif text == "d":
+                        data = [obj for obj in nodes if (not obj['node']['online'])]
+                        for node in data:
+                            tb.send_message(chatid, text=nodetext(node=node))
+                        if not data:
+                            tb.send_message(chatid, text=EMPTY_TEXT)
 
-                else:
-                    tb.send_message(chatid, "No se reconoce el comando")
+                    else:
+                        tb.send_message(chatid, "No se reconoce el comando")
 
-            except Exception as listener_ex:
-                print(listener_ex)
-                tb.send_message(chatid, listener_ex)
+                except Exception as listener_ex:
+                    print(listener_ex)
+                    tb.send_message(chatid, listener_ex)
 
 
 while True:
