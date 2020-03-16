@@ -1,7 +1,6 @@
 import requests
 import telebot
 from time import sleep
-#
 
 TOKEN = '893266500:AAGFqFnbc74XdOi2TCDq7I5kV9S7SgTJ-og'
 
@@ -17,6 +16,7 @@ def run_api(query):
         return request.json()
     else:
         raise Exception("Query failed to run by returning code of {}. {}".format(request.status_code, query))
+        exit()
 
 
 nodes_query = """
